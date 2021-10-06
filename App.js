@@ -11,6 +11,8 @@ const [items, setItems] = useState([
   //{todo: 'second item'},
 ]);
 
+const [newItemText, setNewItemText] = useState('');
+
 const generateList = items.map((item, index) => (
   <View key={index} style={styles.listItemContainer}>
     <Text>{item.todo}</Text>
@@ -18,8 +20,8 @@ const generateList = items.map((item, index) => (
 
 ));
 
-let newItemText = '';
 
+//it's changing variable text to the variable newItemText.
 const onChangeText = (text) => {
   newItemText = text;
 }
@@ -31,17 +33,23 @@ const addToList = () => {
 }
 
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>To Do List</Text>
       <TextInput 
       placeholder="Add a task..." 
       style={styles.textInputField} 
-      onChangeText={text => onChangeText(text)}
+      onChangeText={text => setNewItemText(text)} 
+      value = {newItemText}
       />
       <Button 
       title="Add to List" 
       onPress={addToList}
+      />
+      <Button 
+      title="Clear" 
+      onPress={() => setNewItemText('')}
       />
       <ScrollView style={styles.scrollView}>
         {generateList}
