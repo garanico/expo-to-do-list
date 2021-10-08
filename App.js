@@ -11,12 +11,11 @@ import {
 
 export default function App() {
   //items is the name of the array that holds  all of the to-do list tasks
-  const [items, setItems] = useState([
-    //{ todo: "first item" },
-    //{ todo: "second item" },,
-  ]);
+  const [items, setItems] = useState([]);
 
   const [newItemText, setNewItemText] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogResponse, setDialogResponse] = useState(false);
 
   const generateList = items.map((item, index) => (
     <View key={index} style={styles.listItemContainer}>
@@ -41,9 +40,10 @@ export default function App() {
   };
   const checkIfValid = () => {
     if (newItemText.length > 0 && isNaN(newItemText)) {
-      console.log(newItemText);
+      //console.log(newItemText);
       if (checkIfSame()) {
-        console.log(newItemText + " already exists.");
+        //console.log(newItemText + " already exists.");
+        setShowDialog(true);
       } else {
         addToList();
       }
@@ -51,6 +51,31 @@ export default function App() {
       console.log("Incorrect input");
     }
   };
+
+  const displayDialog = () => (
+    <View style={styles.dialogContainer}>
+      <View style={styles.dialog}>
+        <Text>Dialog Message: tap ok or cancel.</Text>
+        <View style={styles.buttonActions}>
+          <Button
+            title="Cancel"
+            onPress={() => dialogAction(false)}
+          />
+          <Button
+            title="OK"
+            onPress={() => dialogAction(true)}
+          />
+        </View>
+      </View>
+    </View>
+  )
+
+  const dialogAction = (action) => {
+    setDialogResponse(action?true:false);
+    setShowDialog(false);
+  }
+
+
 
   const addToList = () => {
     //console.log({todo:newItemText});
@@ -62,6 +87,15 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>To Do List</Text>
+
+      {showDialog && (<View style={styles.displayContainer}>
+          <Text>{`${newItemText} is already on the list`}</Text>
+          <Button
+            title="Open Dialog"
+            onPress={() => setShowDialog(!showDialog)}
+          />
+      </View>)}
+
       <TextInput
         placeholder="Add a task..."
         style={styles.textInputField}
@@ -107,5 +141,41 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingRight: 30,
     paddingLeft: 30,
+  },
+  displayContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 30,
+  },
+  dialogContainer : {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialog: {
+    border: 'solid 1px #000',
+    margin: '0 auto',
+    borderRadius: 5,
+    padding: 30,
+    backgroundColor: '#FFF',
+  },
+  buttonActions : {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 30,
+  },
+  responseValue: {
+    border: 'solid 1px #000',
+    padding: 20,
+    borderRadius: 5,
+    marginTop: 30,
   },
 });
