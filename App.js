@@ -10,9 +10,8 @@ import {
 } from "react-native";
 
 export default function App() {
-  //items is the name of the array that holds  all of the to-do list tasks
-  const [items, setItems] = useState([]);
-
+  
+  const [items, setItems] = useState([]); //items is the name of the array that holds all of the to-do list tasks
   const [newItemText, setNewItemText] = useState("");
   const [showDialog, setShowDialog] = useState(false);
   const [dialogResponse, setDialogResponse] = useState(false);
@@ -40,9 +39,7 @@ export default function App() {
   };
   const checkIfValid = () => {
     if (newItemText.length > 0 && isNaN(newItemText)) {
-      //console.log(newItemText);
       if (checkIfSame()) {
-        //console.log(newItemText + " already exists.");
         setShowDialog(true);
       } else {
         addToList();
@@ -52,34 +49,12 @@ export default function App() {
     }
   };
 
-  const displayDialog = () => (
-    <View style={styles.dialogContainer}>
-      <View style={styles.dialog}>
-        <Text>Dialog Message: tap ok or cancel.</Text>
-        <View style={styles.buttonActions}>
-          <Button
-            title="Cancel"
-            onPress={() => dialogAction(false)}
-          />
-          <Button
-            title="OK"
-            onPress={() => dialogAction(true)}
-          />
-        </View>
-      </View>
-    </View>
-  )
 
   const dialogAction = (action) => {
     setDialogResponse(action?true:false);
     setShowDialog(false);
   }
-
-
-
   const addToList = () => {
-    //console.log({todo:newItemText});
-    //console.log([...items, {todo: newItemText}]);
     setItems([...items, { todo: newItemText }]);
     setNewItemText("");
   };
@@ -89,9 +64,9 @@ export default function App() {
       <Text style={styles.titleText}>To Do List</Text>
 
       {showDialog && (<View style={styles.displayContainer}>
-          <Text>{`${newItemText} is already on the list`}</Text>
+          <Text>{`${newItemText} is already on the list.`}</Text>
           <Button
-            title="Open Dialog"
+            title="OK"
             onPress={() => setShowDialog(!showDialog)}
           />
       </View>)}
@@ -145,6 +120,7 @@ const styles = StyleSheet.create({
   displayContainer: {
     flex: 1,
     backgroundColor: '#fff',
+    border: 'red solid 2px',
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 30,
